@@ -125,6 +125,7 @@ int main() {
 
 	//[...]
 
+
 	// ..:: Drawing code (in render loop) :: ..
 	// 4. draw the object
 	glUseProgram(shaderProgram);
