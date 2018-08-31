@@ -15,9 +15,16 @@ public:
 	~Window();
 
 	bool open(bool setCurrent = true);
+	bool isOpen() const;
 	void close();
 
-	GLFWwindow * getWindow() const;
+	void clear(GLbitfield mask);
+	void pollEvents();
+	void swapBuffers();
+
+	void setInputMode(int mode = GLFW_STICKY_KEYS, int value = GL_TRUE);
+
+	GLFWwindow * getWindow() const; //Should be removed
 private:
 	GLFWwindow * window;
 

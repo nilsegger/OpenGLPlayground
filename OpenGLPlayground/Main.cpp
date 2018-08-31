@@ -1,7 +1,8 @@
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <iostream>
+#include <vector>
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -10,7 +11,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Window.hpp"
-
+#include "VertexBufferObject.hpp"
+#include "VertexArrayObject.hpp"
 int main() {
 
 	// Initialise GLFW
@@ -28,6 +30,7 @@ int main() {
 		glfwTerminate();
 		return -1;
 	}
+	window->setInputMode(GLFW_STICKY_KEYS, GL_TRUE);
 
 	//glfwMakeContextCurrent(window->getWindow()); // Initialize GLEW
 	glewExperimental = true; // Needed in core profile
@@ -84,71 +87,55 @@ int main() {
 		printf("Error linking shaders to program.");
 	}
 
-	glUseProgram(shaderProgram);
+	//glUseProgram(shaderProgram);
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
 
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
+	float vao_vertices[] = {
+		-0.5f, -0.5f, 0.f,
 		0.5f, -0.5f, 0.0f,
 		0.0f,  0.5f, 0.0f
 	};
 
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-	// 0. copy our vertices array in a buffer for OpenGL to use
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	// 1. then set the vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// 2. use our shader program when we want to render an object
-	glUseProgram(shaderProgram);
-	// 3. now draw the object 
-	//someOpenGLFunctionThatDrawsOurTriangle();
+
+	std::vector<float> vec_vertices(12);
 
 
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
 
-	// ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-	// 1. bind Vertex Array Object
-	glBindVertexArray(VAO);
-	// 2. copy our vertices array in a buffer for OpenGL to use
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	// 3. then set our vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	float vertices[] = {
+		0.5f,  0.5f, 0.0f,  // top right
+		0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left 
+	};
+
+	for (int i = 0; i < 12; i++) {
+		vec_vertices[i] = vertices[i];
+	}
+
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
+	};
 
 
-	//[...]
 
+	VertexArrayObject * vertexArrayObject = new VertexArrayObject(nullptr,nullptr);
+	vertexArrayObject->setVertices(&vec_vertices[0], 12);
+	vertexArrayObject->setIndices(indices, 6);
 
-	// ..:: Drawing code (in render loop) :: ..
-	// 4. draw the object
-	glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
-	//someOpenGLFunctionThatDrawsOurTriangle();
+	
 
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(window->getWindow(), GLFW_STICKY_KEYS, GL_TRUE);
 	do {
-		// Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
-		glClear(GL_COLOR_BUFFER_BIT);
+		window->clear(GL_COLOR_BUFFER_BIT);
+		
+		vertexArrayObject->draw(shaderProgram);
 
-		// Draw nothing, see you in tutorial 2 !
-
-		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		// Swap buffers
-		glfwSwapBuffers(window->getWindow());
-		glfwPollEvents();
+		window->pollEvents();
+		window->swapBuffers();
 
 	} // Check if the ESC key was pressed or the window was closed
-	while (glfwGetKey(window->getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-		glfwWindowShouldClose(window->getWindow()) == 0);
+	while (glfwGetKey(window->getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS && window->isOpen());
+
 }
