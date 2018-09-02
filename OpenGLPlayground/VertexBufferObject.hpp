@@ -13,6 +13,7 @@ public:
 	~VertexBufferObject();
 
 	void setVertices(float * vertices, unsigned int length, unsigned short stride = 3, GLenum type = GL_STATIC_DRAW);
+	void setVerColTex(float * vertices, unsigned int length, GLenum type = GL_STATIC_DRAW); //Vertices, Colors, Texture
 
 	unsigned int getBufferId() const;
 private:

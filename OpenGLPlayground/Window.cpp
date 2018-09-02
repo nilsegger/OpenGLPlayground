@@ -34,10 +34,10 @@ void Window::close()
 
 }
 
-void Window::clear(GLbitfield mask)
+void Window::clear(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
 {
-	glClear(mask);
-	
+	glClearColor(red, green, blue, alpha);
+	glClear(GL_COLOR_BUFFER_BIT);	
 }
 
 void Window::pollEvents()

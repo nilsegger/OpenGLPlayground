@@ -13,7 +13,12 @@
 #include "Window.hpp"
 #include "VertexBufferObject.hpp"
 #include "VertexArrayObject.hpp"
+#include "Shader.hpp"
+#include "ShaderProgram.hpp"
+#include "Texture.hpp"
 int main() {
+
+	
 
 	// Initialise GLFW
 	//glewExperimental = true; // Needed for core profile
@@ -40,57 +45,17 @@ int main() {
 	}
 
 
-	
+	Shader * vertexShader = new Shader(GL_VERTEX_SHADER, "C:/Users/Nils/Documents/Projects/playground/OpenGLPlayground/shader.vertex");
+	vertexShader->load();
+	vertexShader->create();
+	Shader * fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:/Users/Nils/Documents/Projects/playground/OpenGLPlayground/shader.fragment");
+	fragmentShader->load();
+	fragmentShader->create();
 
-	char * vertexShaderSource = "#version 330 core\n layout(location = 0) in vec3 aPos; void main() {	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0); }";
-
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	int  success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED %i \n", infoLog);
-	}
-
-	char * fragmentShaderSource = "#version 330 core\n out vec4 FragColor; void main() { FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);} ";
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED %i \n", infoLog);
-	}
-	
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		printf("Error linking shaders to program.");
-	}
-
-	//glUseProgram(shaderProgram);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
+	ShaderProgram * shaderProgram = new ShaderProgram();
+	shaderProgram->attachShader(vertexShader->get());
+	shaderProgram->attachShader(fragmentShader->get());
+	shaderProgram->create();
 
 	float vao_vertices[] = {
 		-0.5f, -0.5f, 0.f,
@@ -101,41 +66,67 @@ int main() {
 
 	std::vector<float> vec_vertices(12);
 
-
-
-	float vertices[] = {
+	/*float vertices[] = {
 		0.5f,  0.5f, 0.0f,  // top right
 		0.5f, -0.5f, 0.0f,  // bottom right
 		-0.5f, -0.5f, 0.0f,  // bottom left
 		-0.5f,  0.5f, 0.0f   // top left 
-	};
+	};*/
 
-	for (int i = 0; i < 12; i++) {
+	/*for (int i = 0; i < 12; i++) {
 		vec_vertices[i] = vertices[i];
-	}
+	}*/
 
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
 
-
-
-	VertexArrayObject * vertexArrayObject = new VertexArrayObject(nullptr,nullptr);
+	/*VertexArrayObject * vertexArrayObject = new VertexArrayObject(nullptr,nullptr);
 	vertexArrayObject->setVertices(&vec_vertices[0], 12);
-	vertexArrayObject->setIndices(indices, 6);
+	vertexArrayObject->setIndices(indices, 6);*/
+
 
 	
+	float vertices[] = {
+
+		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
+	};
+
+	VertexArrayObject * vertexArrayObject = new VertexArrayObject(nullptr, nullptr);
+	vertexArrayObject->setVerColTex(&vec_vertices[0], 32);
+	vertexArrayObject->setIndices(indices, 6);
+
+	Texture * texture = new Texture("C:/Users/Nils/Documents/Projects/playground/Debug/container.jpg");
+	texture->load();
+	texture->create();
+
+	glUniform1i(glGetUniformLocation(shaderProgram->get(), "texture1"), 0);
 
 	do {
-		window->clear(GL_COLOR_BUFFER_BIT);
+		window->clear();
 		
-		vertexArrayObject->draw(shaderProgram);
+		/*float timeValue = glfwGetTime();
+		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		int vertexColorLocation = glGetUniformLocation(shaderProgram->get(), "ourColor");
+		glUseProgram(shaderProgram->get());
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
+		vertexArrayObject->draw(shaderProgram->get());*/
+
+		vertexArrayObject->draw(shaderProgram->get(), texture->get());
 
 		window->pollEvents();
 		window->swapBuffers();
 
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window->getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS && window->isOpen());
+
+	delete shaderProgram;
+	delete texture;
+	delete vertexArrayObject;
 
 }

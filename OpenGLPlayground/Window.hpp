@@ -18,7 +18,7 @@ public:
 	bool isOpen() const;
 	void close();
 
-	void clear(GLbitfield mask);
+	void clear(GLclampf red = 0.f, GLclampf green = 0.f, GLclampf blue = 0.f, GLclampf alpha = 0.f);
 	void pollEvents();
 	void swapBuffers();
 
