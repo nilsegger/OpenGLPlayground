@@ -16,6 +16,10 @@
 #include "Shader.hpp"
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
+
+#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
+
+
 int main() {
 
 	
@@ -45,10 +49,10 @@ int main() {
 	}
 
 
-	Shader * vertexShader = new Shader(GL_VERTEX_SHADER, "C:/Users/Nils/Documents/Projects/playground/OpenGLPlayground/shader.vertex");
+	Shader * vertexShader = new Shader(GL_VERTEX_SHADER, PLAYGROUNDPATH"/shader.vertex");
 	vertexShader->load();
 	vertexShader->create();
-	Shader * fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:/Users/Nils/Documents/Projects/playground/OpenGLPlayground/shader.fragment");
+	Shader * fragmentShader = new Shader(GL_FRAGMENT_SHADER, PLAYGROUNDPATH"shader.fragment");
 	fragmentShader->load();
 	fragmentShader->create();
 
@@ -100,7 +104,7 @@ int main() {
 	vertexArrayObject->setVerColTex(&vec_vertices[0], 32);
 	vertexArrayObject->setIndices(indices, 6);
 
-	Texture * texture = new Texture("C:/Users/Nils/Documents/Projects/playground/Debug/container.jpg");
+	Texture * texture = new Texture("PLAYGROUNDPATH/container.jpg");
 	texture->load();
 	texture->create();
 

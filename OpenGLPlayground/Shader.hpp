@@ -25,6 +25,7 @@ private:
 	unsigned int id;
 	GLenum type;
 	char * path;
-	char * shader;
+	char * shader = 0;
+
 };
 

@@ -16,6 +16,13 @@ Shader::~Shader()
 bool Shader::load()
 {
 	std::ifstream file(path, std::ios::binary | std::ios::ate);
+
+	if (file.fail()) {
+		printf("Failed to open %s", path);
+		return false;
+	}
+	
+
 	unsigned int size = file.tellg();
 
 	if (size == 0) return false;
@@ -31,6 +38,8 @@ bool Shader::load()
 
 bool Shader::create()
 {
+	if (!shader) return false;
+
 	id = glCreateShader(type);
 	glShaderSource(id, 1, &shader, NULL);
 	glCompileShader(id);

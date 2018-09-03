@@ -16,6 +16,9 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{c4a39b4f-a8d8-4404-a444-1ad908adb4ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="additional">
+      <UniqueIdentifier>{b6a1a622-de56-4d0a-8eb7-e216ba3bc981}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -79,5 +82,10 @@
     <None Include="shader.fragment">
       <Filter>shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="wall.jpg">
+      <Filter>additional</Filter>
+    </Image>
   </ItemGroup>
 </Project>
