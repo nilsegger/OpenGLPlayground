@@ -13,8 +13,6 @@
 #include "stb_image.hpp"
 
 #include "Window.hpp"
-#include "VertexBufferObject.hpp"
-#include "VertexArrayObject.hpp"
 #include "Shader.hpp"
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"

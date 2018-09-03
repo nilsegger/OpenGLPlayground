@@ -133,25 +133,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Drawable.cpp" />
-    <ClCompile Include="ElementBufferObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="VertexArrayObject.cpp" />
-    <ClCompile Include="VertexBufferObject.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Drawable.hpp" />
-    <ClInclude Include="ElementBufferObject.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="ShaderProgram.hpp" />
     <ClInclude Include="stb_image.hpp" />
     <ClInclude Include="Texture.hpp" />
-    <ClInclude Include="VertexArrayObject.hpp" />
-    <ClInclude Include="VertexBufferObject.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
