@@ -60,5 +60,3 @@ GLFWwindow * Window::getWindow() const
 {
 	return window;
 }
-
-

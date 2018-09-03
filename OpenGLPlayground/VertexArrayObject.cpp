@@ -50,9 +50,10 @@ void VertexArrayObject::draw(unsigned int shaderProgram)
 
 void VertexArrayObject::draw(unsigned int shaderProgram, unsigned int texture)
 {
-	glUseProgram(shaderProgram);
-	glActiveTexture(GL_TEXTURE0);
+	
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glUseProgram(shaderProgram);
+	
 	glBindVertexArray(bufferId);
 	if (ebo == nullptr)	glDrawArrays(GL_TRIANGLES, 0, 3);
 	else glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

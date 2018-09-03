@@ -32,5 +32,6 @@ private:
 	short int height;
 	const char * title;
 
+
 };
 

@@ -48,6 +48,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.hpp">
@@ -74,6 +77,9 @@
     <ClInclude Include="Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Drawable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.vertex">
@@ -85,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="wall.jpg">
+      <Filter>additional</Filter>
+    </Image>
+    <Image Include="container.jpg">
       <Filter>additional</Filter>
     </Image>
   </ItemGroup>

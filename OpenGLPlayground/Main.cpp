@@ -10,6 +10,8 @@
 // Include GLFW
 #include <GLFW/glfw3.h>
 
+#include "stb_image.hpp"
+
 #include "Window.hpp"
 #include "VertexBufferObject.hpp"
 #include "VertexArrayObject.hpp"
@@ -17,8 +19,9 @@
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
 
-#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
+#include "Drawable.hpp"
 
+#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
 
 int main() {
 
@@ -32,14 +35,14 @@ int main() {
 		return -1;
 	}
 
-	Window * window = new Window(1024, 768, "Tutorial 01");
+	Window window(1024, 768, "Tutorial 01");
 	
-	if (!window->open()) {
+	if (!window.open()) {
 		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 		glfwTerminate();
 		return -1;
 	}
-	window->setInputMode(GLFW_STICKY_KEYS, GL_TRUE);
+	window.setInputMode(GLFW_STICKY_KEYS, GL_TRUE);
 
 	//glfwMakeContextCurrent(window->getWindow()); // Initialize GLEW
 	glewExperimental = true; // Needed in core profile
@@ -49,88 +52,60 @@ int main() {
 	}
 
 
-	Shader * vertexShader = new Shader(GL_VERTEX_SHADER, PLAYGROUNDPATH"/shader.vertex");
-	vertexShader->load();
-	vertexShader->create();
-	Shader * fragmentShader = new Shader(GL_FRAGMENT_SHADER, PLAYGROUNDPATH"shader.fragment");
-	fragmentShader->load();
-	fragmentShader->create();
+	Shader vertexShader(GL_VERTEX_SHADER, PLAYGROUNDPATH"/shader.vertex");
+	vertexShader.load();
+	vertexShader.create();
+	Shader fragmentShader(GL_FRAGMENT_SHADER, PLAYGROUNDPATH"/shader.fragment");
+	fragmentShader.load();
+	fragmentShader.create();
 
-	ShaderProgram * shaderProgram = new ShaderProgram();
-	shaderProgram->attachShader(vertexShader->get());
-	shaderProgram->attachShader(fragmentShader->get());
-	shaderProgram->create();
+	ShaderProgram shaderProgram;
+	shaderProgram.attachShader(vertexShader.get());
+	shaderProgram.attachShader(fragmentShader.get());
+	shaderProgram.create();
 
-	float vao_vertices[] = {
-		-0.5f, -0.5f, 0.f,
-		0.5f, -0.5f, 0.0f,
-		0.0f,  0.5f, 0.0f
-	};
-
-
-	std::vector<float> vec_vertices(12);
-
-	/*float vertices[] = {
-		0.5f,  0.5f, 0.0f,  // top right
-		0.5f, -0.5f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left 
-	};*/
-
-	/*for (int i = 0; i < 12; i++) {
-		vec_vertices[i] = vertices[i];
-	}*/
 
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
 
-	/*VertexArrayObject * vertexArrayObject = new VertexArrayObject(nullptr,nullptr);
-	vertexArrayObject->setVertices(&vec_vertices[0], 12);
-	vertexArrayObject->setIndices(indices, 6);*/
-
-
 	
 	float vertices[] = {
-
 		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
 		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
 		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
 	};
 
-	VertexArrayObject * vertexArrayObject = new VertexArrayObject(nullptr, nullptr);
-	vertexArrayObject->setVerColTex(&vec_vertices[0], 32);
-	vertexArrayObject->setIndices(indices, 6);
+	std::vector<float> verticesData;
 
-	Texture * texture = new Texture("PLAYGROUNDPATH/container.jpg");
-	texture->load();
-	texture->create();
+	for (int i = 0; i < 32; i++) {
+		verticesData.push_back(vertices[i]);
+	}
 
-	glUniform1i(glGetUniformLocation(shaderProgram->get(), "texture1"), 0);
+
+	std::vector<unsigned int> indicesData;
+	for (int i = 0; i < 6; i++) {
+		indicesData.push_back(indices[i]);
+	}
+
+	Texture texture(PLAYGROUNDPATH"/container.jpg");
+	texture.load();
+	texture.create();
+
+	Drawable drawable(verticesData, indicesData, &shaderProgram, &texture);
 
 	do {
-		window->clear();
-		
-		/*float timeValue = glfwGetTime();
-		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		int vertexColorLocation = glGetUniformLocation(shaderProgram->get(), "ourColor");
-		glUseProgram(shaderProgram->get());
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+		window.clear();
 
-		vertexArrayObject->draw(shaderProgram->get());*/
+		drawable.draw();
 
-		vertexArrayObject->draw(shaderProgram->get(), texture->get());
-
-		window->pollEvents();
-		window->swapBuffers();
+		window.pollEvents();
+		window.swapBuffers();
 
 	} // Check if the ESC key was pressed or the window was closed
-	while (glfwGetKey(window->getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS && window->isOpen());
+	while (glfwGetKey(window.getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS && window.isOpen());
 
-	delete shaderProgram;
-	delete texture;
-	delete vertexArrayObject;
 
 }

@@ -18,7 +18,7 @@ bool Shader::load()
 	std::ifstream file(path, std::ios::binary | std::ios::ate);
 
 	if (file.fail()) {
-		printf("Failed to open %s", path);
+		printf("Failed to open Shader %s", path);
 		return false;
 	}
 	
