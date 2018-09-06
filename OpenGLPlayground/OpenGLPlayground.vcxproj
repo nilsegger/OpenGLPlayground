@@ -74,7 +74,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLFW\include;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLEW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\glm-0.9.9.1\glm-0.9.9.1\glm;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLFW\include;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLEW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLFW\lib-vc2015;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLEW\lib\Release\Win32;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\lib\Release\Win32;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\lib-vc2015</AdditionalLibraryDirectories>
@@ -86,7 +86,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\glm-0.9.9.1\glm-0.9.9.1\glm;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\lib\Release\Win32;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\lib-vc2015</AdditionalLibraryDirectories>
@@ -103,7 +103,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLFW\include;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLEW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\glm-0.9.9.1\glm-0.9.9.1\glm;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLFW\include;C:\Users\Nils\Documents\Projects\OpenGLRoot\External Resources\GLEW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\glm-0.9.9.1\glm-0.9.9.1\glm;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLFW\include;C:\Users\NILSEGGE\OpenGLRoot\OpenGLRoot\External Resources\GLEW\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

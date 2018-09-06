@@ -16,13 +16,14 @@ class Drawable
 {
 public:
 	Drawable() = delete;
+	Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgram, Texture * texture);
 	Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, ShaderProgram * shaderProgram, Texture * texture);
 
 	void draw();
 
 	~Drawable();
 private:
-	unsigned int vbo, ebo, vao;
+	unsigned int vbo, ebo = 0, vao;
 	unsigned int verticesCount;
 
 private:

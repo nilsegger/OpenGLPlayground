@@ -14,7 +14,7 @@ Window::Window(short int width, short int height, const char * title)
 
 Window::~Window()
 {
-	delete window;
+	//delete window;
 }
 
 bool Window::open(bool setCurrent)

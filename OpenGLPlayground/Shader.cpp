@@ -23,13 +23,13 @@ bool Shader::load()
 	}
 	
 
-	unsigned int size = file.tellg();
+	unsigned int size = unsigned int(file.tellg());
 
 	if (size == 0) return false;
 
 	shader = new char[size + 1];
 	file.seekg(0);
-	for (int i = 0; i < size; i++) {
+	for (unsigned int i = 0; i < size; i++) {
 		shader[i] = file.get();
 	}
 	shader[size] = 0;

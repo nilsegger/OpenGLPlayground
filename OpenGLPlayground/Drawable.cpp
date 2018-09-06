@@ -1,5 +1,28 @@
 #include "Drawable.hpp"
 
+Drawable::Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgram, Texture * texture)
+	:shaderProgram(shaderProgram), texture(texture)
+{
+
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+
+	glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, verticesData.size() * sizeof(float), &verticesData[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	verticesCount = unsigned int(verticesData.size() / 8 * 3);
+
+}
+
 Drawable::Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, ShaderProgram * shaderProgram, Texture * texture)
 	:shaderProgram(shaderProgram), texture(texture)
 {
@@ -32,12 +55,13 @@ void Drawable::draw()
 	glBindTexture(GL_TEXTURE_2D, texture->get());
 	glUseProgram(shaderProgram->get());
 	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
+	if(ebo) glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
 }
 
 Drawable::~Drawable()
 {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ebo);
+	if(ebo) glDeleteBuffers(1, &ebo);
 }

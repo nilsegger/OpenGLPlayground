@@ -31,7 +31,7 @@ bool ShaderProgram::create()
 
 	if (!success) {
 		glGetProgramInfoLog(id, 512, NULL, infoLog);
-		printf("Creating shader program failed.\n%i", infoLog);
+		printf("Creating shader program failed.\n%s", infoLog);
 		return false;
 	}
 
