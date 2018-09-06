@@ -9,6 +9,10 @@
 
 #include <vector>
 
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
 
@@ -19,7 +23,7 @@ public:
 	Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgram, Texture * texture);
 	Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, ShaderProgram * shaderProgram, Texture * texture);
 
-	void draw();
+	void draw(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
 	~Drawable();
 private:
