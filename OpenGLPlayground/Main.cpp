@@ -16,7 +16,7 @@
 #include "Shader.hpp"
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
-
+#include "Camera.h"
 #include "Drawable.hpp"
 
 #include <glm.hpp>
@@ -24,33 +24,26 @@
 #include <gtc/type_ptr.hpp>
 
 
-#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
+//#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
+#define PLAYGROUNDPATH "C:\\Users\\Nils\\Documents\\Projects\\playground\\OpenGLPlayground"
+
+/*
+
+m for members
+c for constants/readonlys
+p for pointer (and pp for pointer to pointer)
+v for volatile
+s for static
+i for indexes and iterators
+e for events
+
+*/
+
 
 int main() {
 
-	// Initialise GLFW
-	//glewExperimental = true; // Needed for core profile
-	if (!glfwInit())
-	{
-		fprintf(stderr, "Failed to initialize GLFW\n");
-		return -1;
-	}
 
-	Window window(1024, 768, "Tutorial 01");
-	
-	if (!window.open()) {
-		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
-		glfwTerminate();
-		return -1;
-	}
-	window.setInputMode(GLFW_STICKY_KEYS, GL_TRUE);
-
-	//glfwMakeContextCurrent(window->getWindow()); // Initialize GLEW
-	glewExperimental = true; // Needed in core profile
-	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
-		return -1;
-	}
+	Window window(1024, 768, "MobileBrawl");
 
 
 	Shader vertexShader(GL_VERTEX_SHADER, PLAYGROUNDPATH"/shader.vertex");
@@ -155,9 +148,11 @@ int main() {
 	};
 	
 	
-	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	Camera camera(1024.f, 768.f);
 
 	double old = glfwGetTime();
 	double deltaTime = 0.;
@@ -191,12 +186,14 @@ int main() {
 			float camZ = float(cos(glfwGetTime())) * radius;
 			glm::mat4 view;
 			view = view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
+			//glm::mat4 view = camera.getView();
 
 			glm::mat4 projection = glm::mat4(1.0f);
 			projection = glm::perspective(glm::radians(45.0f), 1024.f / 768.f, 0.1f, 100.0f);
 
-			drawable.draw(model, view, projection);
+			//drawable.draw(model, camera.getView(), camera.getProjection());
+
+			drawable.draw(cubePositions[i], &camera);
 
 			deltaTime = glfwGetTime() - old;
 			old = glfwGetTime();

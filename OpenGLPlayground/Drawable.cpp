@@ -16,8 +16,8 @@ Drawable::Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgra
 	glEnableVertexAttribArray(0);
 	/*glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);*/
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	verticesCount = unsigned int(verticesData.size() / 5*3);
 
@@ -50,25 +50,28 @@ Drawable::Drawable(std::vector<float> verticesData, std::vector<unsigned int> in
 	verticesCount = unsigned int(indices.size());
 }
 
-void Drawable::draw(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+void Drawable::draw(glm::mat4 &model, glm::mat4 &view, glm::mat4 &projection)
 {
 	glBindTexture(GL_TEXTURE_2D, texture->get());
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "model"), 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "view"), 1, GL_FALSE, &view[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(projection * view * model)));
 
 	glUseProgram(shaderProgram->get());
 	glBindVertexArray(vao);
 	if(ebo) glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
 	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
+}
 
-	
-	
-	
-	
-	
+void Drawable::draw(glm::vec3 &position, Camera * camera)
+{
+	glBindTexture(GL_TEXTURE_2D, texture->get());
 
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(camera->getProjection() * camera->getView() * glm::translate(glm::mat4(1.f), position))));
+
+	glUseProgram(shaderProgram->get());
+	glBindVertexArray(vao);
+	if (ebo) glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
 }
 
 Drawable::~Drawable()

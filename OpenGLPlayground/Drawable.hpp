@@ -15,7 +15,7 @@
 
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
-
+#include "Camera.h"
 class Drawable
 {
 public:
@@ -23,7 +23,8 @@ public:
 	Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgram, Texture * texture);
 	Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, ShaderProgram * shaderProgram, Texture * texture);
 
-	void draw(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
+	void draw(glm::mat4 &model, glm::mat4 &view, glm::mat4 &projection);
+	void draw(glm::vec3 &position, Camera * camera);
 
 	~Drawable();
 private:
