@@ -70,10 +70,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.vertex">
+    <None Include="textureShader.fragment">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shader.fragment">
+    <None Include="textureShader.vertex">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="colorShader.fragment">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="colorShader.vertex">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

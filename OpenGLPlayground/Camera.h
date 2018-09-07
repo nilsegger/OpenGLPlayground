@@ -17,6 +17,7 @@ public:
 	Camera(float width, float height, glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
 	~Camera();
 
+	void move(glm::vec3 forward);
 	void move(float x, float y, float z = 0);
 	void setPosition(glm::vec3 position);
 	void setFov(float fov);

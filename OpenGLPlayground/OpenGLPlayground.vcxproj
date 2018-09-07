@@ -151,8 +151,10 @@
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.fragment" />
-    <None Include="shader.vertex" />
+    <None Include="colorShader.fragment" />
+    <None Include="colorShader.vertex" />
+    <None Include="textureShader.fragment" />
+    <None Include="textureShader.vertex" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg" />

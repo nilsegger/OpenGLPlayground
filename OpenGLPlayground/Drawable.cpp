@@ -1,7 +1,9 @@
 #include "Drawable.hpp"
 
-Drawable::Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgram, Texture * texture)
-	:shaderProgram(shaderProgram), texture(texture)
+ShaderProgram * Drawable::s_colorShader = nullptr;
+ShaderProgram * Drawable::s_textureShader = nullptr;
+Drawable::Drawable(std::vector<float> verticesData, Texture * texture, ShaderProgram * shaderProgram)
+	:texture(texture), shaderProgram(shaderProgram)
 {
 
 	glGenVertexArrays(1, &vao);
@@ -20,6 +22,12 @@ Drawable::Drawable(std::vector<float> verticesData, ShaderProgram * shaderProgra
 	glEnableVertexAttribArray(1);
 
 	verticesCount = unsigned int(verticesData.size() / 5*3);
+
+
+	if (shaderProgram == nullptr) {
+		if (texture == nullptr) this->shaderProgram = s_colorShader;
+		else this->shaderProgram = s_textureShader;
+	}
 
 }
 
@@ -64,11 +72,12 @@ void Drawable::draw(glm::mat4 &model, glm::mat4 &view, glm::mat4 &projection)
 
 void Drawable::draw(glm::vec3 &position, Camera * camera)
 {
-	glBindTexture(GL_TEXTURE_2D, texture->get());
+	if(texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
 
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(camera->getProjection() * camera->getView() * glm::translate(glm::mat4(1.f), position))));
 
 	glUseProgram(shaderProgram->get());
+
 	glBindVertexArray(vao);
 	if (ebo) glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
 	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
@@ -79,4 +88,17 @@ Drawable::~Drawable()
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 	if(ebo) glDeleteBuffers(1, &ebo);
+}
+
+void Drawable::initDefShaders()
+{
+	s_colorShader = new ShaderProgram;
+	s_colorShader->attachShader(GL_VERTEX_SHADER, DEFAULT_TEXTURE_SHADER_PATH"\\colorShader.vertex");
+	s_colorShader->attachShader(GL_FRAGMENT_SHADER, DEFAULT_TEXTURE_SHADER_PATH"\\colorShader.fragment");
+	s_colorShader->create();
+	
+	s_textureShader = new ShaderProgram;
+	s_textureShader->attachShader(GL_VERTEX_SHADER,DEFAULT_TEXTURE_SHADER_PATH"\\textureShader.vertex");
+	s_textureShader->attachShader(GL_FRAGMENT_SHADER, DEFAULT_TEXTURE_SHADER_PATH"\\textureShader.fragment");
+	s_textureShader->create();
 }

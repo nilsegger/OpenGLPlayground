@@ -24,8 +24,8 @@
 #include <gtc/type_ptr.hpp>
 
 
-//#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
-#define PLAYGROUNDPATH "C:\\Users\\Nils\\Documents\\Projects\\playground\\OpenGLPlayground"
+#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
+//#define PLAYGROUNDPATH "C:\\Users\\Nils\\Documents\\Projects\\playground\\OpenGLPlayground"
 
 /*
 
@@ -45,19 +45,7 @@ int main() {
 
 	Window window(1024, 768, "MobileBrawl");
 
-
-	Shader vertexShader(GL_VERTEX_SHADER, PLAYGROUNDPATH"/shader.vertex");
-	vertexShader.load();
-	vertexShader.create();
-	Shader fragmentShader(GL_FRAGMENT_SHADER, PLAYGROUNDPATH"/shader.fragment");
-	fragmentShader.load();
-	fragmentShader.create();
-
-	ShaderProgram shaderProgram;
-	shaderProgram.attachShader(vertexShader.get());
-	shaderProgram.attachShader(fragmentShader.get());
-	shaderProgram.create();
-
+	Drawable::initDefShaders();
 
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -132,7 +120,8 @@ int main() {
 	texture.load();
 	texture.create();
 
-	Drawable drawable(verticesData, /*indicesData,*/ &shaderProgram, &texture);
+	//Drawable drawable(verticesData, &texture, nullptr);
+	Drawable drawable(verticesData, nullptr, nullptr);
 
 	glm::vec3 cubePositions[] = {
 		//glm::vec3(0.0f,  0.0f,  0.0f),
@@ -167,13 +156,17 @@ int main() {
 
 			float cameraSpeed = float(5.0 * deltaTime); // adjust accordingly
 			if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-				cameraPos += cameraSpeed * cameraFront;
+				camera.move(cameraSpeed * cameraFront);
+				//cameraPos += cameraSpeed * cameraFront;
 			if (glfwGetKey(window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-				cameraPos -= cameraSpeed * cameraFront;
+				camera.move(-cameraSpeed * cameraFront);
+				//cameraPos -= cameraSpeed * cameraFront;
 			if (glfwGetKey(window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-				cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+				camera.move(-glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
+				//cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 			if (glfwGetKey(window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-				cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+				camera.move(glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
+				//cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 
 
 			glm::mat4 model = glm::mat4(1.0f);

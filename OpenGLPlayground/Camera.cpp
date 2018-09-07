@@ -12,6 +12,11 @@ Camera::~Camera()
 {
 }
 
+void Camera::move(glm::vec3 forward)
+{
+	move(forward.x, forward.y, forward.z);
+}
+
 void Camera::move(float x, float y, float z)
 {
 	m_position += glm::vec3(x, y, z);

@@ -13,6 +13,14 @@ ShaderProgram::~ShaderProgram()
 	glDeleteProgram(id);
 }
 
+void ShaderProgram::attachShader(GLenum type, char * path)
+{
+	Shader shader(type, path);
+	shader.load();
+	shader.create();
+	attachShader(shader.get());
+}
+
 void ShaderProgram::attachShader(unsigned int shader)
 {
 	glAttachShader(id, shader);
