@@ -15,7 +15,7 @@
 
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
-#include "Camera.h"
+#include "Camera.hpp"
 
 #define DEFAULT_TEXTURE_SHADER_PATH "C:\\Users\\NILSEGGE\\OpenGLRoot\\OpenGLRoot\\OpenGLPlayground\\OpenGLPlayground"
 

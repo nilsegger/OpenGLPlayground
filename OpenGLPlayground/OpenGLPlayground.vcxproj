@@ -138,26 +138,32 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="config.hpp" />
     <ClInclude Include="Drawable.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="ShaderProgram.hpp" />
     <ClInclude Include="stb_image.hpp" />
+    <ClInclude Include="Text.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="colorShader.fragment" />
     <None Include="colorShader.vertex" />
+    <None Include="textShader.fragment" />
+    <None Include="textShader.vertex" />
     <None Include="textureShader.fragment" />
     <None Include="textureShader.vertex" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="container.jpg" />
+    <Image Include="font.bmp" />
     <Image Include="wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

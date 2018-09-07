@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <map>
 // Include GLEW. Always include it before gl.h and glfw3.h, since it's a bit magic.
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -16,18 +17,16 @@
 #include "Shader.hpp"
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
-#include "Camera.h"
+#include "Camera.hpp"
 #include "Drawable.hpp"
+
+#include "Text.hpp"
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H  
-
-#define PLAYGROUNDPATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
-//#define PLAYGROUNDPATH "C:\\Users\\Nils\\Documents\\Projects\\playground\\OpenGLPlayground"
+#include "config.hpp"
 
 /*
 
@@ -42,19 +41,12 @@ e for events
 */
 
 
+
 int main() {
 
-	FT_Library ft;
-	if (FT_Init_FreeType(&ft))
-		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "MobileBrawl");
 
-	FT_Face face;
-	if (FT_New_Face(ft, "C:\\Users\\NILSEGGE\\OpenGLRoot\\OpenGLRoot\\OpenGLPlayground\\OpenGLPlayground\\Actor-Regular.ttf", 0, &face))
-		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-
-
-	Window window(1024, 768, "MobileBrawl");
-
+	Text::initDefShader();
 	Drawable::initDefShaders();
 
 	unsigned int indices[] = {  // note that we start from 0!
@@ -126,12 +118,12 @@ int main() {
 		indicesData.push_back(indices[i]);
 	}
 
-	Texture texture(PLAYGROUNDPATH"/container.jpg");
+	/*Texture texture(PATH"/container.jpg");
 	texture.load();
 	texture.create();
 
 	//Drawable drawable(verticesData, &texture, nullptr);
-	Drawable drawable(verticesData, nullptr, nullptr);
+	Drawable drawable(verticesData, nullptr, nullptr);*/
 
 	glm::vec3 cubePositions[] = {
 		//glm::vec3(0.0f,  0.0f,  0.0f),
@@ -151,17 +143,28 @@ int main() {
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	Camera camera(1024.f, 768.f);
-
+	Camera camera(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
+	
 	double old = glfwGetTime();
 	double deltaTime = 0.;
+
+	ShaderProgram textShader;
+	textShader.attachShader(GL_VERTEX_SHADER, PATH"\\textShader.vertex");
+	textShader.attachShader(GL_FRAGMENT_SHADER, PATH"\\textShader.fragment");
+	textShader.create();
+
+
+	Text text;
+	
 
 	do {
 		window.clear();
 
+		text.draw();
+
 		//printf("%f\n", deltaTime);
 
-		for (unsigned int i = 0; i < 9; i++) {
+		/*for (unsigned int i = 0; i < 9; i++) {
 
 
 			float cameraSpeed = float(5.0 * deltaTime); // adjust accordingly
@@ -192,15 +195,19 @@ int main() {
 			//glm::mat4 view = camera.getView();
 
 			glm::mat4 projection = glm::mat4(1.0f);
-			projection = glm::perspective(glm::radians(45.0f), 1024.f / 768.f, 0.1f, 100.0f);
+			projection = glm::perspective(glm::radians(45.0f), float(SCREEN_WIDTH) / float(SCREEN_HEIGHT), 0.1f, 100.0f);
 
 			//drawable.draw(model, camera.getView(), camera.getProjection());
 
 			drawable.draw(cubePositions[i], &camera);
 
-			deltaTime = glfwGetTime() - old;
-			old = glfwGetTime();
-		}
+			
+
+			
+		}*/
+
+		deltaTime = glfwGetTime() - old;
+		old = glfwGetTime();
 
 		window.pollEvents();
 		window.swapBuffers();
