@@ -93,12 +93,12 @@ Drawable::~Drawable()
 void Drawable::initDefShaders()
 {
 	s_colorShader = new ShaderProgram;
-	s_colorShader->attachShader(GL_VERTEX_SHADER, DEFAULT_TEXTURE_SHADER_PATH"\\colorShader.vertex");
-	s_colorShader->attachShader(GL_FRAGMENT_SHADER, DEFAULT_TEXTURE_SHADER_PATH"\\colorShader.fragment");
+	s_colorShader->attachShader(GL_VERTEX_SHADER, PATH"\\colorShader.vertex");
+	s_colorShader->attachShader(GL_FRAGMENT_SHADER, PATH"\\colorShader.fragment");
 	s_colorShader->create();
 	
 	s_textureShader = new ShaderProgram;
-	s_textureShader->attachShader(GL_VERTEX_SHADER,DEFAULT_TEXTURE_SHADER_PATH"\\textureShader.vertex");
-	s_textureShader->attachShader(GL_FRAGMENT_SHADER, DEFAULT_TEXTURE_SHADER_PATH"\\textureShader.fragment");
+	s_textureShader->attachShader(GL_VERTEX_SHADER, PATH"\\textureShader.vertex");
+	s_textureShader->attachShader(GL_FRAGMENT_SHADER, PATH"\\textureShader.fragment");
 	s_textureShader->create();
 }

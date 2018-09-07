@@ -17,7 +17,7 @@
 #include "Texture.hpp"
 #include "Camera.hpp"
 
-#define DEFAULT_TEXTURE_SHADER_PATH "C:\\Users\\NILSEGGE\\OpenGLRoot\\OpenGLRoot\\OpenGLPlayground\\OpenGLPlayground"
+#include "config.hpp"
 
 
 class Drawable

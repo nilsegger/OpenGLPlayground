@@ -8,9 +8,6 @@
 
 #include <map>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H  
-
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
