@@ -153,7 +153,7 @@ int main() {
 	textShader.create();
 
 
-	Text text("HELLO", PATH"/font.bmp", 45, &orthographicCam);
+	Text text("Hello", PATH"/font.bmp", 45, &orthographicCam);
 	
 
 	do {

@@ -12,7 +12,7 @@ Font::~Font()
 
 glm::vec4 Font::getTextureCoord(char c)
 {
-
+	if (c - 32 >= 32 && c - 32 <= 95 && c >= 96) return getTextureCoord(c - 32);
 	if ((c >= 32 && c <= 95) == false) return getTextureCoord('?');
 	return m_character_coord.find(c)->second;
 }
