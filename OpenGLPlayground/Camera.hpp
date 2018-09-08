@@ -14,17 +14,21 @@ class Camera
 {
 public:
 	Camera() = delete;
-	Camera(float width, float height, glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
+	Camera(float width, float height, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f));
 	~Camera();
 
 	void move(glm::vec3 forward);
 	void move(float x, float y, float z = 0);
 	void setPosition(glm::vec3 position);
-	void setFov(float fov);
 
 	glm::mat4 getView() const;
 	glm::mat4 getProjection() const;
-private:
+
+	glm::vec3 getForward() const;
+	glm::vec3 getUp() const;
+protected:
+	virtual void setProjection() = 0;
+
 	float m_width, m_height;
 
 	glm::mat4 m_view;

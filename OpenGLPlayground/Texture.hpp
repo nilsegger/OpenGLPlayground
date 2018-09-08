@@ -17,14 +17,14 @@ public:
 	~Texture();
 
 
-	bool load();
+	virtual bool load(bool flipImage = false);
 	bool create();
 	int getHeight() const;
 	int getWidth() const;
 	int getChannels() const;
 	unsigned int get();
 
-private:
+protected:
 	unsigned int id;
 	char * path;
 	unsigned char * data;

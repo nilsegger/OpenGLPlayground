@@ -18,9 +18,9 @@ Texture::~Texture()
 	glDeleteTextures(1, &id);
 }
 
-bool Texture::load()
+bool Texture::load(bool flipImage)
 {
-
+	stbi_set_flip_vertically_on_load(flipImage);
 	data = stbi_load(path, &width, &height, &nrChannels, 0);
 	if (!data) {
 		printf("Failed to load Texture %s\n", path);

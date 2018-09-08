@@ -18,19 +18,32 @@
 
 #include "config.hpp"
 
-#include "stb_image.hpp"
+#include "Font.hpp"
+
+#include "Drawable.hpp"
+
+struct Character {
+	float m_offset;
+	Drawable* m_drawable;
+};
 
 class Text
 {
 public:
-	Text();
+	//Text(Font * font);
+	Text(char * text, char * fontPath, float size, Camera * camera);
 	~Text();
 
 	//void setPosition(glm::vec3 position);
 	void draw();
 
 private:
+	float m_size;
+	Camera * m_camera;
+	char * m_text;
+	Font * m_font;
 
+	std::vector<Character*> m_characters;
 private:
 	static ShaderProgram * s_shader;
 public:

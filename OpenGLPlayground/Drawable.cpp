@@ -74,8 +74,17 @@ void Drawable::draw(glm::vec3 &position, Camera * camera)
 {
 	if(texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
 
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(camera->getProjection() * camera->getView() * glm::translate(glm::mat4(1.f), position))));
+	if(camera != nullptr) glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(camera->getProjection() * camera->getView() * glm::translate(glm::mat4(1.f), position))));
+	else {
+		glm::mat4 mat = glm::mat4(0.f);
+		mat[0][0] = 1.f;
+		mat[1][1] = 1.f;
+		mat[2][2] = 1.f;
+		mat[3][3] = 1.f;
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(mat));
 
+
+	}
 	glUseProgram(shaderProgram->get());
 
 	glBindVertexArray(vao);

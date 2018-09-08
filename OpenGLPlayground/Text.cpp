@@ -2,19 +2,64 @@
 
 ShaderProgram * Text::s_shader = nullptr;
 
-Text::Text()
+
+Text::Text(char * text, char * fontPath, float size, Camera * camera)
+	:m_camera(camera), m_size(size)
 {
+	m_font = new Font(fontPath);
+	m_font->load(true);
+	m_font->create();
 
-	int width, height, nrChannels;
+	char * c = text;
 
-	unsigned char * data = stbi_load(PATH"/font.bmp", &width, &height, &nrChannels, 0);
+	for (int i = 0; *c; c++, i++) {
+		std::vector<float> vertices;
+		glm::vec4 char_coord = m_font->getTextureCoord(*c);
 
-	if (!data) {
-		printf("Failed to load Texture %s\n", PATH"/font.bmp");
+		vertices.push_back(0.f);
+		vertices.push_back(0.f);
+		vertices.push_back(0.f);
+		vertices.push_back(char_coord.x);
+		vertices.push_back(char_coord.y);
+
+		vertices.push_back(size);
+		vertices.push_back(0.f);
+		vertices.push_back(0.f);
+		vertices.push_back(char_coord.x + char_coord.z);
+		vertices.push_back(char_coord.y);
+
+		vertices.push_back(0.f);
+		vertices.push_back(size);
+		vertices.push_back(0.f);
+		vertices.push_back(char_coord.x);
+		vertices.push_back(char_coord.y + char_coord.w);
+
+
+		vertices.push_back(0.f);
+		vertices.push_back(size);
+		vertices.push_back(0.f);
+		vertices.push_back(char_coord.x);
+		vertices.push_back(char_coord.y + char_coord.w);
+
+		vertices.push_back(size);
+		vertices.push_back(size);
+		vertices.push_back(0.f);
+		vertices.push_back(char_coord.x + char_coord.z);
+		vertices.push_back(char_coord.y + char_coord.w);
+
+		vertices.push_back(size);
+		vertices.push_back(0.f);
+		vertices.push_back(0.f);
+		vertices.push_back(char_coord.x + char_coord.z);
+		vertices.push_back(char_coord.y);
+
+		Character * new_char = new Character;
+		new_char->m_offset = i * size;
+		new_char->m_drawable = new Drawable(vertices, m_font, nullptr);
+		
+		m_characters.push_back(new_char);
 	}
-
 }
-
 
 Text::~Text()
 {
@@ -22,7 +67,9 @@ Text::~Text()
 
 void Text::draw()
 {
-
+	for (unsigned int i = 0; i < unsigned int(m_characters.size()); i++) {
+		m_characters[i]->m_drawable->draw(glm::vec3(m_characters[i]->m_offset, 0.f, 0.f), m_camera);
+	}
 }
 
 void Text::initDefShader()

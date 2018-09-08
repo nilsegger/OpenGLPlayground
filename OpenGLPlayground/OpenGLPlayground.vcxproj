@@ -134,7 +134,10 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="OrthographicCamera.cpp" />
+    <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="stb_image.cpp" />
@@ -146,6 +149,9 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="config.hpp" />
     <ClInclude Include="Drawable.hpp" />
+    <ClInclude Include="Font.hpp" />
+    <ClInclude Include="OrthographicCamera.hpp" />
+    <ClInclude Include="PerspectiveCamera.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="ShaderProgram.hpp" />
     <ClInclude Include="stb_image.hpp" />
