@@ -63,6 +63,9 @@
     <ClCompile Include="PerspectiveCamera.cpp">
       <Filter>Source Files\Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="FPSCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.hpp">
@@ -99,6 +102,9 @@
       <Filter>Header Files\Cameras</Filter>
     </ClInclude>
     <ClInclude Include="OrthographicCamera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

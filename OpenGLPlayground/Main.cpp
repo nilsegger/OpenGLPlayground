@@ -27,7 +27,7 @@
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
-
+#include "FPSCounter.h"
 #include "config.hpp"
 
 /*
@@ -153,10 +153,13 @@ int main() {
 	textShader.create();
 
 
-	Text text("Hello", PATH"/font.bmp", 45, glm::vec3(10.f,10.f, 0.f), &orthographicCam);
+	Text text("FPS", PATH"/font.bmp", 25, glm::vec3(0.f,float(SCREEN_HEIGHT - 25), 0.f), &orthographicCam);
 	
+	FPSCounter fpsCounter;
 
 	do {
+		text.setText("FPS " + std::to_string(fpsCounter.getFPS()));
+
 		window.clear(0.3f,0.3f,0.3f);
 
 		text.draw();

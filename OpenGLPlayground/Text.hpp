@@ -34,18 +34,21 @@ public:
 	Text(char * text, char * fontPath, float size, glm::vec3 position, Camera * camera);
 	~Text();
 
-	//void setPosition(glm::vec3 position);
+	void setText(std::string text);
+	void setText(char * text);
+	void setPosition(glm::vec3 position);
 	void draw();
 
 private:
 	float m_size;
 	Camera * m_camera;
-	char * m_text;
 	Font * m_font;
 	glm::vec3 m_position;
 	std::vector<Character*> m_characters;
 private:
 	static ShaderProgram * s_shader;
+
+	void clearCharacters();
 public:
 	static void initDefShader();
 };
