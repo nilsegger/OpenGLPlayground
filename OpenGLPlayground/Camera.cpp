@@ -53,3 +53,8 @@ glm::vec3 Camera::getUp() const
 {
 	return m_up;
 }
+
+glm::vec3 Camera::getPosition() const
+{
+	return m_position;
+}

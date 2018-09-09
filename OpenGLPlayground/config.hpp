@@ -7,3 +7,5 @@
 #define PATH "C:/Users/Nils/Documents/Projects/playground/OpenGLPlayground"
 
 #define MAX_VERTICES 6
+
+#define WORLD_TO_PIXEL 1.f

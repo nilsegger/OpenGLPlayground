@@ -29,6 +29,8 @@
 #include <gtc/type_ptr.hpp>
 #include "FPSCounter.h"
 #include "config.hpp"
+#include "WorldBodyBuilder.hpp"
+#include <Box2D\Box2D.h>
 
 /*
 
@@ -141,7 +143,7 @@ int main() {
 	};
 	
 	
-	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
+	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.f,0.f,0.1f));
 	OrthographicCamera orthographicCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
 
 	double old = glfwGetTime();
@@ -153,12 +155,71 @@ int main() {
 	textShader.create();
 
 
-	Text text("FPS", PATH"/font.bmp", 25, glm::vec3(0.f,float(SCREEN_HEIGHT - 25), 0.f), &orthographicCam);
-	
+	Text fpsDisplay("FPS", PATH"/font.bmp", 25, glm::vec3(0.f,float(SCREEN_HEIGHT - 25), 0.f), &orthographicCam);
+	Text cameraPositions("Camera Position: ", PATH"/font.bmp", 25, glm::vec3(0.f, float(SCREEN_HEIGHT - 50), 0.f), &orthographicCam);
+
 	FPSCounter fpsCounter;
 
+	b2World world(b2Vec2(0.f, -10.f));
+
+	b2BodyDef groundBodyDef = WorldBodyBuilder::createBodyDef();
+	b2Body* groundBody = WorldBodyBuilder::instantiateBody(groundBodyDef, &world);
+
+	b2PolygonShape groundBox;
+	groundBox.SetAsBox(50.0f, 10.0f);	groundBody->CreateFixture(&groundBox, 0.0f);
+
+
+	// 100 x 20
+
+	float height = 20.f, width = 100.f;
+
+
+	std::vector<float> groundBodyVerticesvec;
+
+	float groundBodyVertices[] = {
+		0.f, 0.f, 0.f, 0.f, 0.f,
+		0.f, 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * height), 0.f, 0.f,0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * width), 0.f, 0.f, 0.f,0.f,
+
+		0.f, 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * height), 0.f, 0.f,0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * width), 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * height), 0.f, 0.f, 0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * width), 0.f, 0.f, 0.f,0.f
+	};
+
+	for (int i = 0; i < 6 * 5; i++) {
+		groundBodyVerticesvec.push_back(groundBodyVertices[i]);
+	}
+
+	Drawable groundBodyDrawable(groundBodyVerticesvec, nullptr, nullptr);
+
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(0.0f, 4.0f);
+	b2Body* body = world.CreateBody(&bodyDef);
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(1.0f, 1.0f);	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+	body->CreateFixture(&fixtureDef);
+
+
+
+
+
+
+
+
+	float32 timeStep = 1.0f / 60.0f;
+	int32 velocityIterations = 6;
+	int32 positionIterations = 2;
+
 	do {
-		text.setText("FPS " + std::to_string(fpsCounter.getFPS()));
+
+		world.Step(timeStep, velocityIterations, positionIterations);
+
+		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
+		cameraPositions.setText(std::to_string(int(perspectiveCam.getPosition().x * SCREEN_WIDTH)) + "/" + std::to_string(int(perspectiveCam.getPosition().y * SCREEN_HEIGHT)) + "/" + std::to_string(int(perspectiveCam.getPosition().z * SCREEN_WIDTH)));
 
 		float cameraSpeed = float(1.0 * deltaTime); // adjust accordingly
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
@@ -172,14 +233,15 @@ int main() {
 
 		window.clear(0.3f,0.3f,0.3f);
 
-		
+		groundBodyDrawable.draw(glm::vec3(0.f,0.f,0.f), &perspectiveCam);
 
 		for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);
 		}
 		
 
-		text.draw();
+		cameraPositions.draw();
+		fpsDisplay.draw();
 
 		window.pollEvents();
 		window.swapBuffers();

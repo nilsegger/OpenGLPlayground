@@ -26,6 +26,7 @@ public:
 
 	glm::vec3 getForward() const;
 	glm::vec3 getUp() const;
+	glm::vec3 getPosition() const;
 protected:
 	virtual void setProjection() = 0;
 
