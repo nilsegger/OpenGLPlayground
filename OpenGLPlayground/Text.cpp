@@ -71,7 +71,7 @@ void Text::setText(std::string text)
 
 		Character * new_char = new Character;
 		new_char->m_offset = i * m_size;
-		new_char->m_drawable = new Drawable(vertices, indices, m_font, nullptr);
+		new_char->m_drawable = new Drawable(vertices/*, indices*/, m_font, nullptr);
 
 		m_characters.push_back(new_char);
 	}
@@ -80,55 +80,6 @@ void Text::setText(std::string text)
 void Text::setText(char * text)
 {
 	setText(std::string(text));
-
-	/*clearCharacters();
-	char * c = text;
-	for (int i = 0; *c; c++, i++) {
-		std::vector<float> vertices;
-		glm::vec4 char_coord = m_font->getTextureCoord(*c);
-
-		vertices.push_back(0.f);
-		vertices.push_back(0.f);
-		vertices.push_back(0.f);
-		vertices.push_back(char_coord.x);
-		vertices.push_back(char_coord.y);
-
-		vertices.push_back(m_size);
-		vertices.push_back(0.f);
-		vertices.push_back(0.f);
-		vertices.push_back(char_coord.x + char_coord.z);
-		vertices.push_back(char_coord.y);
-
-		vertices.push_back(0.f);
-		vertices.push_back(m_size);
-		vertices.push_back(0.f);
-		vertices.push_back(char_coord.x);
-		vertices.push_back(char_coord.y + char_coord.w);
-
-		vertices.push_back(0.f);
-		vertices.push_back(m_size);
-		vertices.push_back(0.f);
-		vertices.push_back(char_coord.x);
-		vertices.push_back(char_coord.y + char_coord.w);
-
-		vertices.push_back(m_size);
-		vertices.push_back(m_size);
-		vertices.push_back(0.f);
-		vertices.push_back(char_coord.x + char_coord.z);
-		vertices.push_back(char_coord.y + char_coord.w);
-
-		vertices.push_back(m_size);
-		vertices.push_back(0.f);
-		vertices.push_back(0.f);
-		vertices.push_back(char_coord.x + char_coord.z);
-		vertices.push_back(char_coord.y);
-
-		Character * new_char = new Character;
-		new_char->m_offset = i * m_size;
-		new_char->m_drawable = new Drawable(vertices, m_font, nullptr);
-
-		m_characters.push_back(new_char);
-	}*/
 }
 
 void Text::setPosition(glm::vec3 position)

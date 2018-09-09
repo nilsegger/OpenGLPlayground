@@ -64,7 +64,7 @@ int main() {
 		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
 	};*/
 
-	/*float vertices[] = {
+	float vertices[] = {
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
 		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -106,29 +106,29 @@ int main() {
 		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-	};*/
+	};
 
-	/*std::vector<float> verticesData;
+	std::vector<float> verticesData;
 
 	for (int i = 0; i < sizeof(vertices) / sizeof(float); i++) {
 		verticesData.push_back(vertices[i]);
 	}
 
 
-	std::vector<unsigned int> indicesData;
+	/*std::vector<unsigned int> indicesData;
 	for (int i = 0; i < 6; i++) {
 		indicesData.push_back(indices[i]);
 	}*/
 
-	/*Texture texture(PATH"/container.jpg");
+	Texture texture(PATH"/container.jpg");
 	texture.load();
 	texture.create();
 
 	//Drawable drawable(verticesData, &texture, nullptr);
-	Drawable drawable(verticesData, nullptr, nullptr);*/
+	Drawable drawable(verticesData, nullptr, nullptr);
 
-	/*glm::vec3 cubePositions[] = {
-		//glm::vec3(0.0f,  0.0f,  0.0f),
+	glm::vec3 cubePositions[] = {
+		glm::vec3(0.0f,  0.0f,  0.0f),
 		glm::vec3(2.0f,  5.0f, -15.0f),
 		glm::vec3(-1.5f, -2.2f, -2.5f),
 		glm::vec3(-3.8f, -2.0f, -12.3f),
@@ -138,7 +138,7 @@ int main() {
 		glm::vec3(1.5f,  2.0f, -2.5f),
 		glm::vec3(1.5f,  0.2f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f)
-	};*/
+	};
 	
 	
 	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
@@ -171,6 +171,13 @@ int main() {
 			perspectiveCam.move(glm::normalize(glm::cross(perspectiveCam.getForward(), perspectiveCam.getUp())) * cameraSpeed);
 
 		window.clear(0.3f,0.3f,0.3f);
+
+		
+
+		for (int i = 0; i < 9; i++) {
+			drawable.draw(cubePositions[i], &perspectiveCam);
+		}
+		
 
 		text.draw();
 
