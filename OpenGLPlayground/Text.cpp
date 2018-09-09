@@ -19,6 +19,8 @@ Text::~Text()
 
 void Text::setText(std::string text)
 {
+	if (text == m_old_text) return;
+	m_old_text = text;
 	clearCharacters();
 	for (int i = 0; i < text.size(); i++) {
 		std::vector<float> vertices;

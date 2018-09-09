@@ -166,7 +166,8 @@ int main() {
 	b2Body* groundBody = WorldBodyBuilder::instantiateBody(groundBodyDef, &world);
 
 	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 10.0f);	groundBody->CreateFixture(&groundBox, 0.0f);
+	groundBox.SetAsBox(50.0f, 10.0f);
+	groundBody->CreateFixture(&groundBox, 0.0f);
 
 
 	// 100 x 20
@@ -195,15 +196,36 @@ int main() {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(0.0f, 4.0f);
-	b2Body* body = world.CreateBody(&bodyDef);
+	b2Body* body = world.CreateBody(&bodyDef);
+
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);	b2FixtureDef fixtureDef;
+	dynamicBox.SetAsBox(1.0f, 1.0f);
+
+	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
+	fixtureDef.friction = 0.3f;
+
 	body->CreateFixture(&fixtureDef);
 
+	//float height = 2.f, width = 2.f;
 
+
+	/*std::vector<float> groundBodyVerticesvec;
+
+	float groundBodyVertices[] = {
+		0.f, 0.f, 0.f, 0.f, 0.f,
+		0.f, 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * height), 0.f, 0.f,0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * width), 0.f, 0.f, 0.f,0.f,
+
+		0.f, 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * height), 0.f, 0.f,0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * width), 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * height), 0.f, 0.f, 0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * width), 0.f, 0.f, 0.f,0.f
+	};
+
+	for (int i = 0; i < 6 * 5; i++) {
+		groundBodyVerticesvec.push_back(groundBodyVertices[i]);
+	}*/
 
 
 
@@ -233,7 +255,7 @@ int main() {
 
 		window.clear(0.3f,0.3f,0.3f);
 
-		groundBodyDrawable.draw(glm::vec3(0.f,0.f,0.f), &perspectiveCam);
+		groundBodyDrawable.draw(glm::vec3(0.f, .1f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)),0.f), &perspectiveCam);
 
 		for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);

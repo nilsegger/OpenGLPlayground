@@ -43,6 +43,7 @@ private:
 	float m_size;
 	Camera * m_camera;
 	Font * m_font;
+	std::string m_old_text;
 	glm::vec3 m_position;
 	std::vector<Character*> m_characters;
 	void clearCharacters();
