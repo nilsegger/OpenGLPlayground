@@ -145,6 +145,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WorldBodyBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Text.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Window.hpp" />
+    <ClInclude Include="WorldBodyBuilder.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="colorShader.fragment" />

@@ -6,3 +6,4 @@
 //#define PATH "C:/Users/NILSEGGE/OpenGLRoot/OpenGLRoot/OpenGLPlayground/OpenGLPlayground"
 #define PATH "C:/Users/Nils/Documents/Projects/playground/OpenGLPlayground"
 
+#define MAX_VERTICES 6
