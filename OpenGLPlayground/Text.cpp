@@ -3,8 +3,8 @@
 ShaderProgram * Text::s_shader = nullptr;
 
 
-Text::Text(char * text, char * fontPath, float size, Camera * camera)
-	:m_camera(camera), m_size(size)
+Text::Text(char * text, char * fontPath, float size, glm::vec3 position, Camera * camera)
+	:m_camera(camera), m_size(size), m_position(position)
 {
 	m_font = new Font(fontPath);
 	m_font->load(true);
@@ -68,7 +68,7 @@ Text::~Text()
 void Text::draw()
 {
 	for (unsigned int i = 0; i < unsigned int(m_characters.size()); i++) {
-		m_characters[i]->m_drawable->draw(glm::vec3(m_characters[i]->m_offset, 0.f, 0.f), m_camera);
+		m_characters[i]->m_drawable->draw(m_position + glm::vec3(m_characters[i]->m_offset, 0.f, 0.f), m_camera);
 	}
 }
 

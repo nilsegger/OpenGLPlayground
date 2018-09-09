@@ -31,7 +31,7 @@ class Text
 {
 public:
 	//Text(Font * font);
-	Text(char * text, char * fontPath, float size, Camera * camera);
+	Text(char * text, char * fontPath, float size, glm::vec3 position, Camera * camera);
 	~Text();
 
 	//void setPosition(glm::vec3 position);
@@ -42,7 +42,7 @@ private:
 	Camera * m_camera;
 	char * m_text;
 	Font * m_font;
-
+	glm::vec3 m_position;
 	std::vector<Character*> m_characters;
 private:
 	static ShaderProgram * s_shader;
