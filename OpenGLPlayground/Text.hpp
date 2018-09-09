@@ -45,10 +45,9 @@ private:
 	Font * m_font;
 	glm::vec3 m_position;
 	std::vector<Character*> m_characters;
+	void clearCharacters();
 private:
 	static ShaderProgram * s_shader;
-
-	void clearCharacters();
 public:
 	static void initDefShader();
 };

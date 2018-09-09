@@ -61,9 +61,17 @@ void Text::setText(std::string text)
 		vertices.push_back(char_coord.x + char_coord.z);
 		vertices.push_back(char_coord.y);
 
+		std::vector<unsigned int> indices(6);
+		indices[0] = 0;
+		indices[1] = 1;
+		indices[2] = 2;
+		indices[3] = 2;
+		indices[4] = 3;
+		indices[5] = 1;
+
 		Character * new_char = new Character;
 		new_char->m_offset = i * m_size;
-		new_char->m_drawable = new Drawable(vertices, m_font, nullptr);
+		new_char->m_drawable = new Drawable(vertices, indices, m_font, nullptr);
 
 		m_characters.push_back(new_char);
 	}

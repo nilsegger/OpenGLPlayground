@@ -25,7 +25,7 @@ class Drawable
 public:
 	Drawable() = delete;
 	Drawable(std::vector<float> verticesData, Texture * texture, ShaderProgram * shaderProgram);
-	Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, ShaderProgram * shaderProgram, Texture * texture);
+	Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, Texture * texture, ShaderProgram * shaderProgram);
 
 	void draw(glm::mat4 &model, glm::mat4 &view, glm::mat4 &projection);
 	void draw(glm::vec3 &position, Camera * camera);

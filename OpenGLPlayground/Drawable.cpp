@@ -31,7 +31,7 @@ Drawable::Drawable(std::vector<float> verticesData, Texture * texture, ShaderPro
 
 }
 
-Drawable::Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, ShaderProgram * shaderProgram, Texture * texture)
+Drawable::Drawable(std::vector<float> verticesData, std::vector<unsigned int> indices, Texture * texture, ShaderProgram * shaderProgram)
 	:shaderProgram(shaderProgram), texture(texture)
 {
 	glGenVertexArrays(1, &vao);
@@ -48,14 +48,19 @@ Drawable::Drawable(std::vector<float> verticesData, std::vector<unsigned int> in
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	/*glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);*/
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
 
 	verticesCount = unsigned int(indices.size());
+
+	if (shaderProgram == nullptr) {
+		if (texture == nullptr) this->shaderProgram = s_colorShader;
+		else this->shaderProgram = s_textureShader;
+	}
 }
 
 void Drawable::draw(glm::mat4 &model, glm::mat4 &view, glm::mat4 &projection)

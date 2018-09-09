@@ -160,10 +160,6 @@ int main() {
 	do {
 		text.setText("FPS " + std::to_string(fpsCounter.getFPS()));
 
-		window.clear(0.3f,0.3f,0.3f);
-
-		text.draw();
-
 		float cameraSpeed = float(1.0 * deltaTime); // adjust accordingly
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
 			perspectiveCam.move(cameraSpeed * perspectiveCam.getForward());
@@ -174,59 +170,15 @@ int main() {
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
 			perspectiveCam.move(glm::normalize(glm::cross(perspectiveCam.getForward(), perspectiveCam.getUp())) * cameraSpeed);
 
-
-		//printf("%f\n", deltaTime);
-
-		/*for (unsigned int i = 0; i < 9; i++) {
-
-
-			float cameraSpeed = float(5.0 * deltaTime); // adjust accordingly
-			if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-				camera.move(cameraSpeed * cameraFront);
-				//cameraPos += cameraSpeed * cameraFront;
-			if (glfwGetKey(window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-				camera.move(-cameraSpeed * cameraFront);
-				//cameraPos -= cameraSpeed * cameraFront;
-			if (glfwGetKey(window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-				camera.move(-glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
-				//cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-			if (glfwGetKey(window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-				camera.move(glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed);
-				//cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-
-
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::translate(model, cubePositions[i]);
-			//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(20.f*(i+1)), glm::vec3(0.5f, 1.0f, 0.0f));
-			
-
-			float radius = 10.0f;
-			float camX = float(sin(glfwGetTime())) * radius;
-			float camZ = float(cos(glfwGetTime())) * radius;
-			glm::mat4 view;
-			view = view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-			//glm::mat4 view = camera.getView();
-
-			glm::mat4 projection = glm::mat4(1.0f);
-			projection = glm::perspective(glm::radians(45.0f), float(SCREEN_WIDTH) / float(SCREEN_HEIGHT), 0.1f, 100.0f);
-
-			//drawable.draw(model, camera.getView(), camera.getProjection());
-
-			drawable.draw(cubePositions[i], &camera);
-
-			
-
-			
-		}*/
+		window.clear(0.3f,0.3f,0.3f);
 
 		text.draw();
-
-		deltaTime = glfwGetTime() - old;
-		old = glfwGetTime();
 
 		window.pollEvents();
 		window.swapBuffers();
 
+		deltaTime = glfwGetTime() - old;
+		old = glfwGetTime();
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window.getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS && window.isOpen());
 
