@@ -143,7 +143,7 @@ int main() {
 	};
 	
 	
-	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.4f,0.4f,1.f));
+	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.4f,0.4f,3.f));
 	OrthographicCamera orthographicCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
 
 	double old = glfwGetTime();
@@ -195,7 +195,7 @@ int main() {
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 10.0f);
+	bodyDef.position.Set(0.01f, 10.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
@@ -205,7 +205,7 @@ int main() {
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
-
+	fixtureDef.restitution = 0.f;
 	body->CreateFixture(&fixtureDef);
 
 	std::vector<float> dynamicBodyVertices;
@@ -225,7 +225,7 @@ int main() {
 	}
 
 	Drawable dynamicBodyDrawable(dynamicBodyVertices, nullptr, nullptr);
-
+	
 	//float height = 2.f, width = 2.f;
 
 
@@ -254,14 +254,23 @@ int main() {
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 
+	groundBodyDrawable.setCamera(&perspectiveCam);
+	dynamicBodyDrawable.setCamera(&perspectiveCam);
+	body->SetTransform(body->GetPosition(), glm::radians(5.f));
 	do {
-		std::cout << groundBody->GetPosition().y << " // " << body->GetPosition().y << std::endl;
+		std::cout << body->GetPosition().x << " // " << body->GetPosition().y << std::endl;
 		getchar();
-		//getchar();
-		world.Step(timeStep, velocityIterations, positionIterations);
+		world.Step(deltaTime, velocityIterations, positionIterations);
 
 		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
 		cameraPositions.setText(std::to_string(int(perspectiveCam.getPosition().x * SCREEN_WIDTH)) + "/" + std::to_string(int(perspectiveCam.getPosition().y * SCREEN_HEIGHT)) + "/" + std::to_string(int(perspectiveCam.getPosition().z * SCREEN_WIDTH)));
+
+		dynamicBodyDrawable.setPosition((glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f)));
+		dynamicBodyDrawable.setAngle(body->GetAngle());
+
+		groundBodyDrawable.setPosition(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f));
+		groundBodyDrawable.setAngle(groundBody->GetAngle());
+
 
 		float cameraSpeed = float(.5 * deltaTime); // adjust accordingly
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_Q) == GLFW_PRESS)
@@ -279,12 +288,13 @@ int main() {
 
 		window.clear(0.3f,0.3f,0.3f);
 
-		groundBodyDrawable.draw(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */,0.f), &perspectiveCam);
-		dynamicBodyDrawable.draw(glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f), &perspectiveCam);
+		//groundBodyDrawable.draw(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */,0.f), &perspectiveCam);
+		//dynamicBodyDrawable.draw(glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f), &perspectiveCam);
 		/*for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);
 		}*/
-		
+		dynamicBodyDrawable.draw();
+		groundBodyDrawable.draw();
 
 		cameraPositions.draw();
 		fpsDisplay.draw();

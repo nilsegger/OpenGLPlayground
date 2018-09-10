@@ -30,6 +30,12 @@ public:
 	void draw(glm::mat4 &model, glm::mat4 &view, glm::mat4 &projection);
 	void draw(glm::vec3 &position, Camera * camera);
 
+	void draw(); //Use only when position etc is set
+
+	void setPosition(glm::vec3 position);
+	void setAngle(float radian);
+	void setCamera(Camera * camera);
+
 	~Drawable();
 private:
 	unsigned int vbo, ebo = 0, vao;
@@ -38,6 +44,11 @@ private:
 private:
 	ShaderProgram * shaderProgram;
 	Texture * texture;
+
+	glm::vec3 m_position;
+	float m_angle; //radian
+	Camera * m_camera = nullptr;
+
 
 public:
 	static void initDefShaders();

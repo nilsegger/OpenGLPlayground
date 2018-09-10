@@ -87,6 +87,33 @@ void Drawable::draw(glm::vec3 &position, Camera * camera)
 	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
 }
 
+void Drawable::draw()
+{
+	if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
+	glUseProgram(shaderProgram->get());
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(m_camera->getProjection() * m_camera->getView() * glm::rotate(glm::translate(glm::mat4(1.f), m_position), m_angle, glm::vec3(0.f,0.f,1.f)))));
+
+
+	glBindVertexArray(vao);
+	if (ebo) glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
+}
+
+void Drawable::setPosition(glm::vec3 position)
+{
+	m_position = position;
+}
+
+void Drawable::setAngle(float radian)
+{
+	m_angle = radian;
+}
+
+void Drawable::setCamera(Camera * camera)
+{
+	m_camera = camera;
+}
+
 Drawable::~Drawable()
 {
 	glDeleteVertexArrays(1, &vao);
