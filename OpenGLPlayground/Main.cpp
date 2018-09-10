@@ -126,8 +126,8 @@ int main() {
 	texture.load();
 	texture.create();
 
-	Drawable drawable(verticesData, &texture, nullptr);
-	//Drawable drawable(verticesData, nullptr, nullptr);
+	//Drawable drawable(verticesData, &texture, nullptr);
+	Drawable drawable(verticesData, nullptr, nullptr);
 
 	glm::vec3 cubePositions[] = {
 		glm::vec3(2.0f,  0.0f,  -100.0f),
@@ -143,7 +143,7 @@ int main() {
 	};
 	
 	
-	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.f,0.f,0.1f));
+	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.4f,0.4f,1.f));
 	OrthographicCamera orthographicCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
 
 	double old = glfwGetTime();
@@ -162,7 +162,7 @@ int main() {
 
 	b2World world(b2Vec2(0.f, -10.f));
 
-	b2BodyDef groundBodyDef = WorldBodyBuilder::createBodyDef();
+	b2BodyDef groundBodyDef = WorldBodyBuilder::createBodyDef(b2_staticBody, b2Vec2(0.f, -10.f));
 	b2Body* groundBody = WorldBodyBuilder::instantiateBody(groundBodyDef, &world);
 
 	b2PolygonShape groundBox;
@@ -195,7 +195,7 @@ int main() {
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.0f, 4.0f);
+	bodyDef.position.Set(0.0f, 10.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
@@ -207,6 +207,24 @@ int main() {
 	fixtureDef.friction = 0.3f;
 
 	body->CreateFixture(&fixtureDef);
+
+	std::vector<float> dynamicBodyVertices;
+	float dynHeight = 2.f, dynWidth = 2.f;
+	float dynamicVertices[] = {
+		0.f, 0.f, 0.f, 0.f, 0.f,
+		0.f, 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * dynHeight), 0.f, 0.f,0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * dynWidth), 0.f, 0.f, 0.f,0.f,
+
+		0.f, 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * dynHeight), 0.f, 0.f,0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * dynWidth), 1.f / SCREEN_HEIGHT * (WORLD_TO_PIXEL * dynHeight), 0.f, 0.f, 0.f,
+		1.f / SCREEN_WIDTH * (WORLD_TO_PIXEL * dynWidth), 0.f, 0.f, 0.f,0.f
+	};
+
+	for (int i = 0; i < 6 * 5; i++) {
+		dynamicBodyVertices.push_back(dynamicVertices[i]);
+	}
+
+	Drawable dynamicBodyDrawable(dynamicBodyVertices, nullptr, nullptr);
 
 	//float height = 2.f, width = 2.f;
 
@@ -228,7 +246,7 @@ int main() {
 	}*/
 
 
-
+	
 
 
 
@@ -237,29 +255,33 @@ int main() {
 	int32 positionIterations = 2;
 
 	do {
-
+		getchar();
 		world.Step(timeStep, velocityIterations, positionIterations);
 
 		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
 		cameraPositions.setText(std::to_string(int(perspectiveCam.getPosition().x * SCREEN_WIDTH)) + "/" + std::to_string(int(perspectiveCam.getPosition().y * SCREEN_HEIGHT)) + "/" + std::to_string(int(perspectiveCam.getPosition().z * SCREEN_WIDTH)));
 
-		float cameraSpeed = float(1.0 * deltaTime); // adjust accordingly
-		if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+		float cameraSpeed = float(.5 * deltaTime); // adjust accordingly
+		if (glfwGetKey(window.getWindow(), GLFW_KEY_Q) == GLFW_PRESS)
 			perspectiveCam.move(cameraSpeed * perspectiveCam.getForward());
-		if (glfwGetKey(window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+		if (glfwGetKey(window.getWindow(), GLFW_KEY_E) == GLFW_PRESS)
 			perspectiveCam.move(-cameraSpeed * perspectiveCam.getForward());
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
 			perspectiveCam.move(-glm::normalize(glm::cross(perspectiveCam.getForward(), perspectiveCam.getUp())) * cameraSpeed);
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
 			perspectiveCam.move(glm::normalize(glm::cross(perspectiveCam.getForward(), perspectiveCam.getUp())) * cameraSpeed);
+		if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+			perspectiveCam.move(cameraSpeed * perspectiveCam.getUp());
+		if (glfwGetKey(window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+			perspectiveCam.move(-cameraSpeed * perspectiveCam.getUp());
 
 		window.clear(0.3f,0.3f,0.3f);
 
-		groundBodyDrawable.draw(glm::vec3(0.f, .1f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)),0.f), &perspectiveCam);
-
-		for (int i = 0; i < 9; i++) {
+		groundBodyDrawable.draw(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */,0.f), &perspectiveCam);
+		dynamicBodyDrawable.draw(glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f), &perspectiveCam);
+		/*for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);
-		}
+		}*/
 		
 
 		cameraPositions.draw();

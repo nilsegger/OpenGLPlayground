@@ -19,5 +19,5 @@ void PerspectiveCamera::setFOV(float FOV)
 
 void PerspectiveCamera::setProjection()
 {
-	m_projection = glm::perspective(glm::radians(m_fov), m_width / m_height, 0.1f, 100.0f);
+	m_projection = glm::perspective(glm::radians(m_fov), m_width / m_height, 0.01f, 100.0f);
 }
