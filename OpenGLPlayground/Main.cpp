@@ -255,7 +255,9 @@ int main() {
 	int32 positionIterations = 2;
 
 	do {
+		std::cout << groundBody->GetPosition().y << " // " << body->GetPosition().y << std::endl;
 		getchar();
+		//getchar();
 		world.Step(timeStep, velocityIterations, positionIterations);
 
 		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
@@ -277,8 +279,8 @@ int main() {
 
 		window.clear(0.3f,0.3f,0.3f);
 
-		groundBodyDrawable.draw(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */,0.f), &perspectiveCam);
-		dynamicBodyDrawable.draw(glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f), &perspectiveCam);
+		groundBodyDrawable.draw(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */,0.f), &perspectiveCam);
+		dynamicBodyDrawable.draw(glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f), &perspectiveCam);
 		/*for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);
 		}*/
