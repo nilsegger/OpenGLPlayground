@@ -89,8 +89,12 @@ void Drawable::draw(glm::vec3 &position, Camera * camera)
 
 void Drawable::draw()
 {
-	if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
+	
 	glUseProgram(shaderProgram->get());
+
+	if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
+	else glUniform4fv(glGetUniformLocation(shaderProgram->get(), "textureColor"), 1, glm::value_ptr(m_color));
+
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(m_camera->getProjection() * m_camera->getView() * glm::rotate(glm::translate(glm::mat4(1.f), m_position), m_angle, glm::vec3(0.f,0.f,1.f)))));
 
 
@@ -112,6 +116,11 @@ void Drawable::setAngle(float radian)
 void Drawable::setCamera(Camera * camera)
 {
 	m_camera = camera;
+}
+
+void Drawable::setColor(glm::vec4 color)
+{
+	m_color = color;
 }
 
 Drawable::~Drawable()

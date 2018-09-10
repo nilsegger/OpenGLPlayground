@@ -165,8 +165,15 @@ int main() {
 	b2BodyDef groundBodyDef = WorldBodyBuilder::createBodyDef(b2_staticBody, b2Vec2(0.f, -10.f));
 	b2Body* groundBody = WorldBodyBuilder::instantiateBody(groundBodyDef, &world);
 
-	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 10.0f);
+	std::vector<b2Vec2> groundBoxShapeVertices;
+	groundBoxShapeVertices.push_back({ 0.f,0.f });
+	groundBoxShapeVertices.push_back({ 0.f,-20.f });
+	groundBoxShapeVertices.push_back({ 100.f,-20.f });
+	groundBoxShapeVertices.push_back({ 100.f,0.f });
+
+	b2PolygonShape groundBox = WorldBodyBuilder::createPolygonShape(groundBoxShapeVertices);
+
+//	groundBox.SetAsBox(50.0f, 10.0f);
 	groundBody->CreateFixture(&groundBox, 0.0f);
 
 
@@ -195,17 +202,27 @@ int main() {
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.01f, 10.0f);
+	bodyDef.position.Set(0.f, 4.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1.0f, 1.0f);
+	std::vector<b2Vec2> dynamicBoxShapeVertices;
+	dynamicBoxShapeVertices.push_back({ 0.f,0.f });
+	dynamicBoxShapeVertices.push_back({ 0.f,-2.f });
+	dynamicBoxShapeVertices.push_back({ 2.f,-2.f });
+	dynamicBoxShapeVertices.push_back({2.f,0.f});
+	
+	
+	
+
+
+	b2PolygonShape dynamicBox = WorldBodyBuilder::createPolygonShape(dynamicBoxShapeVertices);
+	
+	//dynamicBox.SetAsBox(1.0f, 1.0f);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
-	fixtureDef.restitution = 0.f;
 	body->CreateFixture(&fixtureDef);
 
 	std::vector<float> dynamicBodyVertices;
@@ -225,7 +242,7 @@ int main() {
 	}
 
 	Drawable dynamicBodyDrawable(dynamicBodyVertices, nullptr, nullptr);
-	
+	dynamicBodyDrawable.setColor(glm::vec4(1.f,0.f,0.f,1.f));
 	//float height = 2.f, width = 2.f;
 
 
@@ -256,12 +273,18 @@ int main() {
 
 	groundBodyDrawable.setCamera(&perspectiveCam);
 	dynamicBodyDrawable.setCamera(&perspectiveCam);
-	body->SetTransform(body->GetPosition(), glm::radians(5.f));
-	do {
-		std::cout << body->GetPosition().x << " // " << body->GetPosition().y << std::endl;
-		getchar();
-		world.Step(deltaTime, velocityIterations, positionIterations);
+	body->SetTransform(body->GetPosition(), glm::radians(0.f));
 
+	float timer = 0.f;
+
+	do {
+		/*std::cout << body->GetPosition().x << " // " << body->GetPosition().y << std::endl;
+		getchar();*/
+
+		if (timer >= 1.f / 60.f) {
+			world.Step(1.f / 60.f, velocityIterations, positionIterations);
+			timer = 0.0f;
+		}
 		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
 		cameraPositions.setText(std::to_string(int(perspectiveCam.getPosition().x * SCREEN_WIDTH)) + "/" + std::to_string(int(perspectiveCam.getPosition().y * SCREEN_HEIGHT)) + "/" + std::to_string(int(perspectiveCam.getPosition().z * SCREEN_WIDTH)));
 
@@ -304,6 +327,7 @@ int main() {
 
 		deltaTime = glfwGetTime() - old;
 		old = glfwGetTime();
+		timer += float(deltaTime);
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window.getWindow(), GLFW_KEY_ESCAPE) != GLFW_PRESS && window.isOpen());
 

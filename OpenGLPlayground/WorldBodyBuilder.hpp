@@ -18,7 +18,7 @@ public:
 	static b2FixtureDef createFixtureDef(b2Shape * shape, float density = 1.f, float friction = 1.f, float restitution = 0.f);
 	static b2FixtureDef createFixtureDef(b2Shape * shape, bool isSensor, float density = 1.f, float friction = 1.f, float restitution = 0.f);
 
-	static b2PolygonShape createPolygonShape(b2Vec2 * vertices, int fontSize);
+	static b2PolygonShape createPolygonShape(b2Vec2 * vertices, int size);
 	static b2PolygonShape createPolygonShape(std::vector<b2Vec2> vertices);
 
 	static b2EdgeShape createEdgeShape(b2Vec2 start, b2Vec2 end);

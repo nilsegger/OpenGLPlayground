@@ -35,6 +35,7 @@ public:
 	void setPosition(glm::vec3 position);
 	void setAngle(float radian);
 	void setCamera(Camera * camera);
+	void setColor(glm::vec4 color);
 
 	~Drawable();
 private:
@@ -48,7 +49,7 @@ private:
 	glm::vec3 m_position;
 	float m_angle; //radian
 	Camera * m_camera = nullptr;
-
+	glm::vec4 m_color = glm::vec4(1.f,1.f,1.f,1.f);
 
 public:
 	static void initDefShaders();
