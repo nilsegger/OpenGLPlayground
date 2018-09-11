@@ -32,12 +32,11 @@ public:
 
 	void draw(); //Use only when position etc is set
 
-	void draw(float halfX, float halfY); //Use only when position etc is set
-
 	void setPosition(glm::vec3 position);
 	void setAngle(float radian);
 	void setCamera(Camera * camera);
 	void setColor(glm::vec4 color);
+	void setLocalOrigin(glm::vec3 origin);
 
 	~Drawable();
 private:
@@ -48,10 +47,14 @@ private:
 	ShaderProgram * shaderProgram;
 	Texture * texture;
 
+	
 	glm::vec3 m_position;
 	float m_angle; //radian
+	glm::vec3 m_origin = glm::vec3(0.f, 0.f, 0.f);
+
 	Camera * m_camera = nullptr;
 	glm::vec4 m_color = glm::vec4(1.f,1.f,1.f,1.f);
+
 
 public:
 	static void initDefShaders();

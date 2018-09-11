@@ -142,7 +142,7 @@ int main() {
 	};
 	
 	
-	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.4f,0.4f,3.f));
+	PerspectiveCamera perspectiveCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT), glm::vec3(0.f,0.f,3.f));
 	OrthographicCamera orthographicCam(float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
 
 	double old = glfwGetTime();
@@ -269,7 +269,9 @@ int main() {
 	int32 positionIterations = 2;
 
 	groundBodyDrawable.setCamera(&perspectiveCam);
+	groundBodyDrawable.setLocalOrigin(glm::vec3((1.f / SCREEN_WIDTH * (width * WORLD_TO_PIXEL)) / 2.f, (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) / 2.f, 0.f));
 	dynamicBodyDrawable.setCamera(&perspectiveCam);
+	dynamicBodyDrawable.setLocalOrigin(glm::vec3((1.f / SCREEN_WIDTH * (dynWidth * WORLD_TO_PIXEL)) / 2.f, (1.f / SCREEN_HEIGHT * (dynHeight * WORLD_TO_PIXEL)) / 2.f, 0.f ));
 	body->SetTransform(body->GetPosition() + b2Vec2(51.f, 0.f), glm::radians(46.f));
 	float timer = 0.f;
 
@@ -312,8 +314,8 @@ int main() {
 		/*for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);
 		}*/
-		dynamicBodyDrawable.draw((1.f / SCREEN_WIDTH * (dynWidth * WORLD_TO_PIXEL)) / 2.f, (1.f / SCREEN_HEIGHT * (dynHeight * WORLD_TO_PIXEL)) / 2.f);
-		groundBodyDrawable.draw((1.f / SCREEN_WIDTH * (width * WORLD_TO_PIXEL)) / 2.f, (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) / 2.f);
+		dynamicBodyDrawable.draw();
+		groundBodyDrawable.draw();
 
 		cameraPositions.draw();
 		fpsDisplay.draw();
