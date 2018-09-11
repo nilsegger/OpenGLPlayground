@@ -47,7 +47,6 @@ e for events
 
 
 int main() {
-
 	Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "MobileBrawl");
 
 	Text::initDefShader();
@@ -202,7 +201,7 @@ int main() {
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(0.f, 4.0f);
+	bodyDef.position.Set(1.f, 4.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
 	std::vector<b2Vec2> dynamicBoxShapeVertices;
@@ -273,7 +272,7 @@ int main() {
 
 	groundBodyDrawable.setCamera(&perspectiveCam);
 	dynamicBodyDrawable.setCamera(&perspectiveCam);
-	body->SetTransform(body->GetPosition(), glm::radians(0.f));
+	body->SetTransform(body->GetPosition(), glm::radians(46.f));
 
 	float timer = 0.f;
 
@@ -288,7 +287,7 @@ int main() {
 		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
 		cameraPositions.setText(std::to_string(int(perspectiveCam.getPosition().x * SCREEN_WIDTH)) + "/" + std::to_string(int(perspectiveCam.getPosition().y * SCREEN_HEIGHT)) + "/" + std::to_string(int(perspectiveCam.getPosition().z * SCREEN_WIDTH)));
 
-		dynamicBodyDrawable.setPosition((glm::vec3((body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f)));
+		dynamicBodyDrawable.setPosition((glm::vec3(1.f / SCREEN_WIDTH * (body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f)));
 		dynamicBodyDrawable.setAngle(body->GetAngle());
 
 		groundBodyDrawable.setPosition(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f));
