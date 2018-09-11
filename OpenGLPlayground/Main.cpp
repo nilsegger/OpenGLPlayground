@@ -154,8 +154,8 @@ int main() {
 	textShader.create();
 
 
-	Text fpsDisplay("FPS", PATH"/font.bmp", 25, glm::vec3(0.f,float(SCREEN_HEIGHT - 25), 0.f), &orthographicCam);
-	Text cameraPositions("Camera Position: ", PATH"/font.bmp", 25, glm::vec3(0.f, float(SCREEN_HEIGHT - 50), 0.f), &orthographicCam);
+	Text fpsDisplay("FPS", PATH"/font.bmp", 15, glm::vec3(0.f,float(SCREEN_HEIGHT - 15), 0.f), &orthographicCam);
+	Text cameraPositions("Camera Position: ", PATH"/font.bmp", 15, glm::vec3(0.f, float(SCREEN_HEIGHT - 30), 0.f), &orthographicCam);
 
 	FPSCounter fpsCounter;
 
@@ -165,10 +165,12 @@ int main() {
 	b2Body* groundBody = WorldBodyBuilder::instantiateBody(groundBodyDef, &world);
 
 	std::vector<b2Vec2> groundBoxShapeVertices;
-	groundBoxShapeVertices.push_back({ 0.f,0.f });
-	groundBoxShapeVertices.push_back({ 0.f,-20.f });
-	groundBoxShapeVertices.push_back({ 100.f,-20.f });
-	groundBoxShapeVertices.push_back({ 100.f,0.f });
+	
+	groundBoxShapeVertices.push_back({ -50.f,-10.f });
+	groundBoxShapeVertices.push_back({ -50.f,10.f });
+	groundBoxShapeVertices.push_back({ 50.f,10.f });
+	groundBoxShapeVertices.push_back({ 50.f,-10.f });
+	
 
 	b2PolygonShape groundBox = WorldBodyBuilder::createPolygonShape(groundBoxShapeVertices);
 
@@ -201,14 +203,15 @@ int main() {
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(1.f, 4.0f);
+	bodyDef.position.Set(-1.f, 4.0f);
 	b2Body* body = world.CreateBody(&bodyDef);
 
 	std::vector<b2Vec2> dynamicBoxShapeVertices;
-	dynamicBoxShapeVertices.push_back({ 0.f,0.f });
-	dynamicBoxShapeVertices.push_back({ 0.f,-2.f });
-	dynamicBoxShapeVertices.push_back({ 2.f,-2.f });
-	dynamicBoxShapeVertices.push_back({2.f,0.f});
+	
+	dynamicBoxShapeVertices.push_back({ -1.f,-1.f });
+	dynamicBoxShapeVertices.push_back({ -1.f,1.f });
+	dynamicBoxShapeVertices.push_back({ 1.f,1.f });
+	dynamicBoxShapeVertices.push_back({ 1.f,-1.f });
 	
 	
 	
@@ -241,7 +244,7 @@ int main() {
 	}
 
 	Drawable dynamicBodyDrawable(dynamicBodyVertices, nullptr, nullptr);
-	dynamicBodyDrawable.setColor(glm::vec4(1.f,0.f,0.f,1.f));
+	dynamicBodyDrawable.setColor(glm::vec4(1.f, 0.f, 0.f, 1.f));
 	//float height = 2.f, width = 2.f;
 
 
@@ -261,19 +264,13 @@ int main() {
 		groundBodyVerticesvec.push_back(groundBodyVertices[i]);
 	}*/
 
-
-	
-
-
-
 	float32 timeStep = 1.0f / 60.0f;
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 
 	groundBodyDrawable.setCamera(&perspectiveCam);
 	dynamicBodyDrawable.setCamera(&perspectiveCam);
-	body->SetTransform(body->GetPosition(), glm::radians(46.f));
-
+	body->SetTransform(body->GetPosition() + b2Vec2(51.f, 0.f), glm::radians(46.f));
 	float timer = 0.f;
 
 	do {
@@ -287,10 +284,10 @@ int main() {
 		fpsDisplay.setText("FPS " + std::to_string(fpsCounter.getFPS()));
 		cameraPositions.setText(std::to_string(int(perspectiveCam.getPosition().x * SCREEN_WIDTH)) + "/" + std::to_string(int(perspectiveCam.getPosition().y * SCREEN_HEIGHT)) + "/" + std::to_string(int(perspectiveCam.getPosition().z * SCREEN_WIDTH)));
 
-		dynamicBodyDrawable.setPosition((glm::vec3(1.f / SCREEN_WIDTH * (body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (dynHeight / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f)));
+		dynamicBodyDrawable.setPosition((glm::vec3(1.f / SCREEN_WIDTH * (body->GetPosition().x * WORLD_TO_PIXEL), (1.f / SCREEN_HEIGHT * (body->GetPosition().y * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f)));
 		dynamicBodyDrawable.setAngle(body->GetAngle());
 
-		groundBodyDrawable.setPosition(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) - (1.f / SCREEN_HEIGHT * (height / 2.f * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f));
+		groundBodyDrawable.setPosition(glm::vec3(0.f, (1.f / SCREEN_HEIGHT * (groundBody->GetPosition().y * WORLD_TO_PIXEL)) /*1.f - (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) -.9f */, 0.f));
 		groundBodyDrawable.setAngle(groundBody->GetAngle());
 
 
