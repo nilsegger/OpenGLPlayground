@@ -306,6 +306,10 @@ int main() {
 			perspectiveCam.move(cameraSpeed * perspectiveCam.getUp());
 		if (glfwGetKey(window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
 			perspectiveCam.move(-cameraSpeed * perspectiveCam.getUp());
+		if (glfwGetKey(window.getWindow(), GLFW_KEY_R) == GLFW_PRESS)
+			perspectiveCam.setFOV(perspectiveCam.getFOV() + cameraSpeed * 15);
+		if (glfwGetKey(window.getWindow(), GLFW_KEY_F) == GLFW_PRESS)
+			perspectiveCam.setFOV(perspectiveCam.getFOV() - cameraSpeed * 15);
 
 		window.clear(0.3f,0.3f,0.3f);
 

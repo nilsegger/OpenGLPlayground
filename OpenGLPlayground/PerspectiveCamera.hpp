@@ -9,7 +9,7 @@ public:
 	~PerspectiveCamera();
 
 	void setFOV(float FOV = 45.f);
-
+	float getFOV() const;
 private:
 	void setProjection() override;
 	float m_fov;
