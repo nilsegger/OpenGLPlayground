@@ -95,7 +95,30 @@ void Drawable::draw()
 	if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
 	else glUniform4fv(glGetUniformLocation(shaderProgram->get(), "textureColor"), 1, glm::value_ptr(m_color));
 
+	glm::mat4 translation = glm::translate(glm::mat4(1.f), m_position);
+	translation = glm::rotate(translation, m_angle, glm::vec3(0.f, 0.f, 1.f));
+	translation = glm::translate(translation, glm::vec3());
+
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(m_camera->getProjection() * m_camera->getView() * glm::rotate(glm::translate(glm::mat4(1.f), m_position), m_angle, glm::vec3(0.f,0.f,1.f)))));
+
+
+	glBindVertexArray(vao);
+	if (ebo) glDrawElements(GL_TRIANGLES, verticesCount, GL_UNSIGNED_INT, 0);
+	else glDrawArrays(GL_TRIANGLES, 0, verticesCount);
+}
+
+void Drawable::draw(float halfX, float halfY)
+{
+	glUseProgram(shaderProgram->get());
+
+	if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->get());
+	else glUniform4fv(glGetUniformLocation(shaderProgram->get(), "textureColor"), 1, glm::value_ptr(m_color));
+
+	glm::mat4 translation = glm::translate(glm::mat4(1.f), m_position);
+	translation = glm::rotate(translation, m_angle, glm::vec3(0.f, 0.f, 1.f));
+	translation = glm::translate(translation, glm::vec3(-halfX, -halfY, 0.f));
+
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram->get(), "transformation"), 1, GL_FALSE, glm::value_ptr(glm::mat4(m_camera->getProjection() * m_camera->getView() * translation)));
 
 
 	glBindVertexArray(vao);

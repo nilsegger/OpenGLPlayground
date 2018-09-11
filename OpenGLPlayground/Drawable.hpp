@@ -32,6 +32,8 @@ public:
 
 	void draw(); //Use only when position etc is set
 
+	void draw(float halfX, float halfY); //Use only when position etc is set
+
 	void setPosition(glm::vec3 position);
 	void setAngle(float radian);
 	void setCamera(Camera * camera);

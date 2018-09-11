@@ -312,8 +312,8 @@ int main() {
 		/*for (int i = 0; i < 9; i++) {
 			drawable.draw(cubePositions[i], &perspectiveCam);
 		}*/
-		dynamicBodyDrawable.draw();
-		groundBodyDrawable.draw();
+		dynamicBodyDrawable.draw((1.f / SCREEN_WIDTH * (dynWidth * WORLD_TO_PIXEL)) / 2.f, (1.f / SCREEN_HEIGHT * (dynHeight * WORLD_TO_PIXEL)) / 2.f);
+		groundBodyDrawable.draw((1.f / SCREEN_WIDTH * (width * WORLD_TO_PIXEL)) / 2.f, (1.f / SCREEN_HEIGHT * (height * WORLD_TO_PIXEL)) / 2.f);
 
 		cameraPositions.draw();
 		fpsDisplay.draw();
